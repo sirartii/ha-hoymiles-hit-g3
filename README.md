@@ -21,6 +21,14 @@ The register selection is based on a working **HIT-10L-G3** installation and dir
 
 The integration only reads input registers (**FC04**). It does not change inverter, battery, grid or protection settings.
 
+## Example implementation
+
+![Home Assistant Energy dashboard in the reference HIT-10L-G3 installation, showing solar production, battery charge and discharge, balanced grid energy and energy distribution](docs/images/energy-dashboard-example.png)
+
+The reference HIT-10L-G3 installation shows daily energy history, per-input solar production, battery charging and discharging, grid import and export, and energy distribution. This screenshot comes from the original YAML-based configuration used to develop this integration; its interface labels and entity names reflect that installation.
+
+To build a similar view with this integration, follow the [Energy dashboard setup](#energy-dashboard). For the two solar series shown, select **PV1 energy** and **PV2 energy** as separate solar sources instead of also adding the combined **PV energy** sensor. The screenshot's balanced grid energy sensors use Integral helpers fed by phase-balanced import and export power, as described below.
+
 ## Connect the converter
 
 ```text
