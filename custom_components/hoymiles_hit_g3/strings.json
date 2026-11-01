@@ -1,0 +1,63 @@
+{
+  "title": "Hoymiles HIT-G3",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect your Hoymiles HIT-G3",
+        "description": "Enter the address of your Modbus TCP to RS485 gateway. The inverter is read only. Configure RS485 speed and wiring on the gateway before continuing.",
+        "data": {
+          "name": "Device name",
+          "host": "Gateway IP address or hostname",
+          "port": "TCP port",
+          "unit_id": "Inverter Modbus address (unit ID)",
+          "scan_interval": "Polling interval (seconds)",
+          "timeout": "Response timeout (seconds)",
+          "pv_strings": "Number of PV inputs to monitor",
+          "has_battery": "Battery installed",
+          "has_grid_meter": "External grid meter installed",
+          "grid_direction": "Raw meter power direction"
+        },
+        "data_description": {
+          "grid_direction": "Use positive_export for the reference installation. Change only if comparison with your meter confirms reversed polarity.",
+          "pv_strings": "Include every connected PV input. Unmonitored inputs are excluded from the calculated PV total."
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure your Hoymiles HIT-G3",
+        "description": "Update the gateway address or installed hardware. Existing entity identities are retained.",
+        "data": {
+          "name": "Device name",
+          "host": "Gateway IP address or hostname",
+          "port": "TCP port",
+          "unit_id": "Inverter Modbus address (unit ID)",
+          "scan_interval": "Polling interval (seconds)",
+          "timeout": "Response timeout (seconds)",
+          "pv_strings": "Number of PV inputs to monitor",
+          "has_battery": "Battery installed",
+          "has_grid_meter": "External grid meter installed",
+          "grid_direction": "Raw meter power direction"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "No valid reply from the inverter. Check gateway mode, IP address, port, unit ID, RS485 settings and wiring. Stop other Modbus pollers before retrying.",
+      "invalid_inverter": "The device replied, but its status block does not match the supported HIT-G3 map. Check the inverter model and gateway settings."
+    },
+    "abort": {
+      "already_configured": "This gateway endpoint and inverter address are already configured.",
+      "reconfigure_successful": "The configuration was updated."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Polling options",
+        "description": "Changes reload the integration. Use Reconfigure to change the gateway or installed hardware.",
+        "data": {
+          "scan_interval": "Polling interval (seconds)",
+          "timeout": "Response timeout (seconds)"
+        }
+      }
+    }
+  }
+}

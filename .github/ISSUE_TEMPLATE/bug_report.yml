@@ -1,0 +1,30 @@
+name: Bug report
+description: Report a connection, decoding or Home Assistant problem.
+body:
+  - type: input
+    id: inverter
+    attributes:
+      label: Inverter model and firmware
+      placeholder: HIT-10L-G3, Power DSP firmware ...
+    validations:
+      required: true
+  - type: input
+    id: gateway
+    attributes:
+      label: Gateway model and mode
+      placeholder: Model, Modbus TCP to RTU, baud rate
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Home Assistant and integration versions
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include expected behavior, steps to reproduce and relevant logs. Remove network addresses, credentials and serial numbers before posting.
+    validations:
+      required: true
