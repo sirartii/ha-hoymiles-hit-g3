@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 — 2026-11-01
+
+- Enable every HACS validation check, including local brand assets, for submission to the default catalogue.
+- Inverter monitoring behavior and configuration are unchanged from 0.1.0.
+
 ## 0.1.0 — 2026-11-01
 
 Initial public release for local, read-only monitoring of Hoymiles HIT-L-G3 inverters.
