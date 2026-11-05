@@ -2,7 +2,7 @@
 
 [![Validation](https://github.com/sirartii/ha-hoymiles-hit-g3/actions/workflows/validate.yml/badge.svg)](https://github.com/sirartii/ha-hoymiles-hit-g3/actions/workflows/validate.yml)
 [![Release](https://img.shields.io/github/v/release/sirartii/ha-hoymiles-hit-g3)](https://github.com/sirartii/ha-hoymiles-hit-g3/releases)
-[![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://www.hacs.xyz/docs/faq/custom_repositories/)
+[![HACS Default](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/default/blob/master/integration)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 Local monitoring of Hoymiles **HIT-(5–20)L-G3** hybrid inverters through a **Modbus TCP to RS485 gateway**. Configure it in the Home Assistant UI. No cloud account is required for monitoring.
@@ -47,19 +47,18 @@ See the [wiring guide](docs/CONNECTION.md) for the pin table, cable notes and tr
 
 Requires **Home Assistant 2026.10 or newer** and HACS.
 
+The integration is included in the default HACS catalogue.
+
+1. Open **HACS** and search for **Hoymiles HIT-G3**.
+2. Open the integration, select **Download**, then restart Home Assistant.
+3. Open **Settings → Devices & services → Add integration → Hoymiles HIT-G3**.
+4. Enter the gateway address, TCP port and inverter unit ID. Select the installed battery, grid meter and PV inputs. The default polling interval is 15 seconds.
+
+You can also open this repository directly in HACS:
+
 [![Open your Home Assistant instance and open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=sirartii&repository=ha-hoymiles-hit-g3&category=integration)
 
-Or add it manually:
-
-1. Open **HACS → ⋮ → Custom repositories**.
-2. Add `https://github.com/sirartii/ha-hoymiles-hit-g3` with type **Integration**.
-3. Download **Hoymiles HIT-G3**, then restart Home Assistant.
-4. Open **Settings → Devices & services → Add integration → Hoymiles HIT-G3**.
-5. Enter the gateway address, TCP port and inverter unit ID. Select the installed battery, grid meter and PV inputs. The default polling interval is 15 seconds.
-
 For example, a gateway could be `192.0.2.10:502`, unit ID `1`. Replace the example address with your gateway's address. RS485 baud rate is configured on the gateway, not in Home Assistant.
-
-This is a public **HACS custom repository**. It is not currently included in the default HACS catalogue and is not an official Hoymiles integration.
 
 ### Manual installation
 
