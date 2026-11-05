@@ -70,15 +70,18 @@ async def test_real_modbus_framing_and_serialization(raw):
         first, second = await asyncio.gather(client.async_read(), client.async_read())
         assert first.registers[1025] == second.registers[1025] == 50
         assert first.unsupported_blocks == ()
-        assert len(requests) == 16
+        assert len(requests) == 20
+        assert requests.count((4, 190, 2, 1)) == 2
+        assert requests.count((4, 325, 4, 1)) == 2
         assert all(function == 4 for function, *_ in requests)
 
 
 async def test_optional_illegal_address_is_isolated(raw):
-    async with modbus_server(raw, rejected=(2000,)) as (client, _):
+    async with modbus_server(raw, rejected=(325, 2000)) as (client, _):
         result = await client.async_read()
         assert result.registers[0] == 3
-        assert result.unsupported_blocks == (2000,)
+        assert result.unsupported_blocks == (325, 2000)
+        assert 325 not in result.registers
         assert 2000 not in result.registers
         assert result.registers[2100] == 200
 
@@ -86,7 +89,7 @@ async def test_optional_illegal_address_is_isolated(raw):
 async def test_disabling_hardware_skips_its_blocks(raw):
     async with modbus_server(raw) as (client, requests):
         await client.async_read(has_battery=False, has_grid_meter=False)
-        assert not {1021, 1046, 1078}.intersection(start for _, start, _, _ in requests)
+        assert not {325, 1021, 1046, 1078}.intersection(start for _, start, _, _ in requests)
 
 
 @pytest.mark.parametrize("kwargs", [{"fail_core": True}, {"truncate": True}, {"disconnect": True}])

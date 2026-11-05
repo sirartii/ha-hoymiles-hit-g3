@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2 — 2026-11-05
+
+- Read DRM mode and the inverter's reactive power on each phase. Calculate total reactive power from all three phases.
+- Read battery charge and discharge current limits and cutoff voltages from an optional register block.
+- Expose the inverter's reported PV total for comparison with the sum of the PV inputs.
+- Document installation from the default HACS catalogue.
+
 ## 0.1.1 — 2026-11-01
 
 - Enable every HACS validation check, including local brand assets, for submission to the default catalogue.

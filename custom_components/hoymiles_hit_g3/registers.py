@@ -33,6 +33,7 @@ class Register:
 REGISTERS = (
     Register("operating_state", "Operating state", 0, maximum=6),
     Register("dsp_firmware", "Power DSP firmware", 1, diagnostic=True),
+    Register("drm_mode", "DRM mode", 3, diagnostic=True),
     Register("software_fault", "Software fault code", 19, "H32", diagnostic=True),
     Register("hardware_fault", "Hardware fault code", 21, "H32", diagnostic=True),
     *(
@@ -160,6 +161,14 @@ REGISTERS = (
                 device_class="power",
             ),
             Register(
+                f"inverter_reactive_power_{phase}",
+                f"Inverter phase {phase.upper()} reactive power",
+                78 + index,
+                "I16",
+                unit="var",
+                device_class="reactive_power",
+            ),
+            Register(
                 f"eps_voltage_{phase}",
                 f"EPS phase {phase.upper()} voltage",
                 81 + index,
@@ -222,6 +231,56 @@ REGISTERS = (
         group="temperature",
         minimum=-40,
         maximum=150,
+    ),
+    Register(
+        "reported_pv_power",
+        "Reported PV power",
+        190,
+        "U32",
+        unit="W",
+        device_class="power",
+        group="pv_total",
+        diagnostic=True,
+        maximum=40000,
+    ),
+    Register(
+        "battery_max_charge_current",
+        "Battery max charge current",
+        325,
+        unit="A",
+        device_class="current",
+        group="battery",
+        diagnostic=True,
+    ),
+    Register(
+        "battery_charge_cutoff_voltage",
+        "Battery charge cutoff voltage",
+        326,
+        divisor=10,
+        unit="V",
+        device_class="voltage",
+        group="battery",
+        diagnostic=True,
+    ),
+    Register(
+        "battery_discharge_cutoff_voltage",
+        "Battery discharge cutoff voltage",
+        327,
+        divisor=10,
+        unit="V",
+        device_class="voltage",
+        group="battery",
+        diagnostic=True,
+    ),
+    Register(
+        "battery_max_discharge_current",
+        "Battery max discharge current",
+        328,
+        divisor=10,
+        unit="A",
+        device_class="current",
+        group="battery",
+        diagnostic=True,
     ),
     Register("bms_connected", "BMS connection", 1022, group="battery", maximum=1),
     Register(
@@ -303,6 +362,8 @@ REGISTERS = (
 READ_BLOCKS = (
     ("core", 0, 100),
     ("temperature", 113, 3),
+    ("pv_total", 190, 2),
+    ("battery", 325, 4),
     ("battery", 1021, 9),
     ("meter", 1046, 1),
     ("meter", 1078, 6),
@@ -386,6 +447,10 @@ def decode_snapshot(
 
     total("pv_power", tuple(f"pv{string}_power" for string in range(1, pv_strings + 1)))
     total("inverter_power", tuple(f"inverter_power_{phase}" for phase in ("a", "b", "c")))
+    total(
+        "inverter_reactive_power",
+        tuple(f"inverter_reactive_power_{phase}" for phase in ("a", "b", "c")),
+    )
     total("eps_power", tuple(f"eps_power_{phase}" for phase in ("a", "b", "c")))
     if "grid_meter_connected" in values:
         total(

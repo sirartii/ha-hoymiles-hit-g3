@@ -13,10 +13,10 @@ The register selection is based on a working **HIT-10L-G3** installation and dir
 
 - Up to four PV inputs: voltage, current, power, total power and energy.
 - G3 battery voltage, **32-bit current and power**, state of charge, capacity and BMS connection status.
-- Inverter and EPS measurements for each phase, with correctly calculated power totals.
+- Inverter and EPS measurements for each phase, including inverter reactive power and calculated totals.
 - Grid power with phase balancing, separate import/export power and meter connection status.
 - Lifetime and daily energy counters, with Home Assistant statistics metadata.
-- Operating state, temperatures, fault-code diagnostics and redacted support diagnostics.
+- Operating state, DRM mode, battery current limits and cutoff voltages, temperatures, and fault diagnostics.
 - Automatic recovery after a lost connection; unavailable readings remain unavailable.
 
 The integration only reads input registers (**FC04**). It does not change inverter, battery, grid or protection settings.

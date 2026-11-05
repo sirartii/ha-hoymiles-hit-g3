@@ -48,6 +48,11 @@ async def test_setup_statistics_metadata_outage_recovery_and_unload(
     assert energy.attributes["unit_of_measurement"] == "kWh"
     assert hass.states.get(entity("operating_state")).state == "grid_connected"
     assert hass.states.get(entity("grid_import_power")).state == "300"
+    reactive_power = hass.states.get(entity("inverter_reactive_power"))
+    assert reactive_power.state == "-115"
+    assert reactive_power.attributes["device_class"] == "reactive_power"
+    assert reactive_power.attributes["unit_of_measurement"] == "var"
+    assert hass.states.get(entity("battery_charge_cutoff_voltage")).state == "56.5"
     mock_client.async_read.side_effect = CannotConnect("Simulated outage")
     await entry.runtime_data.async_refresh()
     await hass.async_block_till_done()

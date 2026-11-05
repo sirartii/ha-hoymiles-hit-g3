@@ -45,6 +45,16 @@ async def async_setup_entry(
             )
         )
     entities.extend(HITPowerSensor(coordinator, entry, key, name) for key, name in totals)
+    entities.append(
+        HITPowerSensor(
+            coordinator,
+            entry,
+            "inverter_reactive_power",
+            "Inverter reactive power",
+            device_class=SensorDeviceClass.REACTIVE_POWER,
+            unit="var",
+        )
+    )
     async_add_entities(entities)
 
 
@@ -89,16 +99,23 @@ class HITSensor(HITEntity, SensorEntity):
 class HITPowerSensor(HITEntity, SensorEntity):
     """Computed totals with import/export split after summing all phases."""
 
-    _attr_device_class = SensorDeviceClass.POWER
     _attr_state_class = SensorStateClass.MEASUREMENT
-    _attr_native_unit_of_measurement = "W"
     _attr_suggested_display_precision = 0
 
     def __init__(
-        self, coordinator: HITCoordinator, entry: ConfigEntry, key: str, name: str
+        self,
+        coordinator: HITCoordinator,
+        entry: ConfigEntry,
+        key: str,
+        name: str,
+        *,
+        device_class: SensorDeviceClass = SensorDeviceClass.POWER,
+        unit: str = "W",
     ) -> None:
         super().__init__(coordinator, entry, key)
         self._attr_name = name
+        self._attr_device_class = device_class
+        self._attr_native_unit_of_measurement = unit
 
     @property
     def native_value(self):

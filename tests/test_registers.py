@@ -21,6 +21,7 @@ def test_g3_current_power_frequency_and_unsigned_energy(raw):
     assert values["grid_frequency"] == 50
     assert values["pv_energy"] == 6000
     assert values["pv_power"] == 1600
+    assert values["reported_pv_power"] == 1590
     assert values["inverter_power"] == 1800
     assert values["eps_power"] == 600
     assert (
@@ -41,15 +42,28 @@ def test_net_grid_power_is_split_after_balancing_phases(raw):
     assert reverse["grid_export_power"] == 300
 
 
+def test_reactive_power_and_battery_limits_match_the_reference_scaling(raw):
+    values = decode_snapshot(raw, active_registers(4, True, True), 4)
+    assert values["drm_mode"] == 2
+    assert values["inverter_reactive_power_a"] == -150
+    assert values["inverter_reactive_power"] == -115
+    assert values["battery_max_charge_current"] == 100
+    assert values["battery_charge_cutoff_voltage"] == 56.5
+    assert values["battery_discharge_cutoff_voltage"] == 44
+    assert values["battery_max_discharge_current"] == 125
+
+
 def test_missing_phase_does_not_make_a_false_zero(raw):
     raw.pop(1079)
     raw.pop(32)
+    raw.pop(80)
     values = decode_snapshot(raw, active_registers(4, True, True), 4)
     assert values["grid_net_power"] is None
     assert values["grid_import_power"] is None
     assert values["grid_export_power"] is None
     assert values["pv_power"] is None
     assert values["inverter_power"] == 1800
+    assert values["inverter_reactive_power"] is None
 
 
 def test_offline_peripherals_do_not_erase_lifetime_counters(raw):
@@ -71,6 +85,7 @@ def test_batteryless_two_input_system(raw):
     assert values["grid_frequency"] == 50
     assert "pv3_power" not in values
     assert "battery_power" not in values
+    assert "battery_max_charge_current" not in values
     assert "bms_connected" not in values
     assert "grid_net_power" not in values
 
