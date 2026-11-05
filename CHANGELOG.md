@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3 — 2026-11-05
+
+- Fix the gateway address field so Home Assistant can display the setup and reconfiguration forms.
+
 ## 0.1.2 — 2026-11-05
 
 - Read DRM mode and the inverter's reactive power on each phase. Calculate total reactive power from all three phases.

@@ -31,9 +31,7 @@ def connection_schema(defaults: dict[str, Any]) -> vol.Schema:
     return vol.Schema(
         {
             vol.Required(CONF_NAME, default=defaults.get(CONF_NAME, DEFAULT_NAME)): str,
-            vol.Required(CONF_HOST, default=defaults.get(CONF_HOST, "")): vol.All(
-                str, str.strip, vol.Length(min=1)
-            ),
+            vol.Required(CONF_HOST, default=defaults.get(CONF_HOST, "")): str,
             vol.Required(CONF_PORT, default=defaults.get(CONF_PORT, DEFAULT_PORT)): vol.All(
                 vol.Coerce(int), vol.Range(min=1, max=65535)
             ),
@@ -75,6 +73,8 @@ def endpoint_id(settings: dict) -> str:
 
 async def async_validate(settings: dict) -> None:
     """Test real inverter responses, not just an open TCP port."""
+    if not settings[CONF_HOST]:
+        raise CannotConnect("The gateway address is empty")
     client = HITClient(
         settings[CONF_HOST], settings[CONF_PORT], settings[CONF_UNIT_ID], settings[CONF_TIMEOUT]
     )

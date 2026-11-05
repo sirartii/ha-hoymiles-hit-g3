@@ -6,11 +6,13 @@ import pytest
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.const import STATE_UNAVAILABLE
 from homeassistant.data_entry_flow import FlowResultType
+from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import entity_registry as er
+from probatio import to_field_list
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.hoymiles_hit_g3.client import CannotConnect, InvalidInverter, Snapshot
-from custom_components.hoymiles_hit_g3.config_flow import endpoint_id
+from custom_components.hoymiles_hit_g3.config_flow import connection_schema, endpoint_id
 from custom_components.hoymiles_hit_g3.const import DOMAIN
 from custom_components.hoymiles_hit_g3.diagnostics import async_get_config_entry_diagnostics
 
@@ -80,6 +82,12 @@ async def test_failed_first_refresh_closes_connection(hass, settings, mock_clien
     assert not await hass.config_entries.async_setup(entry.entry_id)
     assert entry.state is ConfigEntryState.SETUP_RETRY
     mock_client.close.assert_called_once()
+
+
+def test_home_assistant_can_serialize_the_gateway_address_field():
+    fields = to_field_list(connection_schema({}), custom_serializer=cv.custom_serializer)
+    host = next(field for field in fields if field["name"] == "host")
+    assert host["type"] == "string"
 
 
 async def test_config_flow_validates_and_prevents_duplicates(hass, settings):
