@@ -8,7 +8,8 @@ import pytest
 
 from custom_components.hoymiles_hit_g3.client import CannotConnect, HITClient, InvalidInverter
 
-pytestmark = pytest.mark.enable_socket
+# Enable sockets after Home Assistant's setup hook blocks them for each test.
+pytestmark = pytest.mark.usefixtures("socket_enabled")
 
 
 @asynccontextmanager
